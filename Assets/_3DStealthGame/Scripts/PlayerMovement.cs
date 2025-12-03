@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject sprintIconOff;
 private void Sprint(){
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isSprintOnCooldown){
+        while (Input.GetKeyDown(KeyCode.LeftShift) && !isSprintOnCooldown){
             StartCoroutine(SprintRoutine());
         }
     }
@@ -71,6 +71,8 @@ private void Sprint(){
         isSprinting = true;
         walkSpeed *= 2;
         turnSpeed *= 2;
+        //show sprint UI
+        sprintIconActive.SetActive(true);
 
     yield return new WaitForSeconds(sprintDuration);
 
@@ -78,15 +80,12 @@ private void Sprint(){
         turnSpeed /= 2;
         isSprinting = false;
         isSprintOnCooldown = true;
-        
-        //show sprint ui
-        sprintIconActive.SetActive(true);
         sprintIconOff.SetActive(false);
+        
+        
 
     yield return new WaitForSeconds(sprintCooldown);
         isSprintOnCooldown = false;
-        sprintIconActive.SetActive(false);
-        sprintIconOff.SetActive(true);
     }
 
 }
