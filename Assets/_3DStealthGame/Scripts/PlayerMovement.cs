@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -20,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
         m_Animator = GetComponent<Animator> ();
         m_Rigidbody = GetComponent<Rigidbody> ();
         MoveAction.Enable();
+        sprintIconActive.SetActive(false);
+        sprintIconOff.SetActive(true);
     }
 
     void FixedUpdate ()
@@ -41,5 +47,47 @@ public class PlayerMovement : MonoBehaviour
         
         m_Rigidbody.MoveRotation (m_Rotation);
         m_Rigidbody.MovePosition (m_Rigidbody.position + m_Movement * walkSpeed * Time.deltaTime);
+
+        Sprint();
+
+
+        
     }
+ //Sprint Function
+    private bool isSprintOnCooldown = false;
+    private bool isSprinting = false;
+    private float sprintCooldown = 2.0f;
+    private float sprintDuration = 5.0f;
+    public GameObject sprintIconActive;
+    public GameObject sprintIconOff;
+private void Sprint(){
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isSprintOnCooldown){
+            StartCoroutine(SprintRoutine());
+        }
+    }
+    //sprint coroutine
+    private IEnumerator SprintRoutine(){
+        isSprinting = true;
+        walkSpeed *= 2;
+        turnSpeed *= 2;
+
+    yield return new WaitForSeconds(sprintDuration);
+
+        walkSpeed /= 2;
+        turnSpeed /= 2;
+        isSprinting = false;
+        isSprintOnCooldown = true;
+        
+        //show sprint ui
+        sprintIconActive.SetActive(true);
+        sprintIconOff.SetActive(false);
+
+    yield return new WaitForSeconds(sprintCooldown);
+        isSprintOnCooldown = false;
+        sprintIconActive.SetActive(false);
+        sprintIconOff.SetActive(true);
+    }
+
 }
+
