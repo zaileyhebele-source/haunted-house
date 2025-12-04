@@ -163,8 +163,27 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     m_Flags: 0
+  UnfreezeAction:
+    m_Name: Unfreeze
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a61bae45-b9d2-41f9-8808-bc9e12eb046d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   walkSpeed: 1.5
   turnSpeed: 0.05
+  shield: 0
+  freezeIntervalMin: 5
+  freezeIntervalMax: 12
+  requiredPresses: 5
+  freezeText: {fileID: 0}
+  shieldPrefab: {fileID: 0}
+  ghostPrefab: {fileID: 0}
+  sprintIconActive: {fileID: 0}
+  sprintIconOff: {fileID: 0}
+  sprintIconReady: {fileID: 0}
 --- !u!81 &2147046521693605406
 AudioListener:
   m_ObjectHideFlags: 0

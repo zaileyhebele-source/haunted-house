@@ -3643,6 +3643,11 @@ PrefabInstance:
       propertyPath: sprintIconActive
       value: 
       objectReference: {fileID: 1422647065}
+    - target: {fileID: 5577986619789816798, guid: 66770e53997bc4646a786b5d4adfdf01,
+        type: 3}
+      propertyPath: UnfreezeAction.m_Name
+      value: Unfreeze
+      objectReference: {fileID: 0}
     - target: {fileID: 6089713070808961047, guid: 66770e53997bc4646a786b5d4adfdf01,
         type: 3}
       propertyPath: m_Name

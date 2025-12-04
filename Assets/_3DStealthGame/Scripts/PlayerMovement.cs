@@ -120,19 +120,21 @@ public class PlayerMovement : MonoBehaviour
 
         m_Rigidbody.MoveRotation(m_Rotation);
         m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * walkSpeed * Time.deltaTime);
-    }
-}
-        Vector3 desiredForward = Vector3.RotateTowards (transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
+    
+        //Vector3 desiredForward = Vector3.RotateTowards (transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation (desiredForward);
         
         m_Rigidbody.MoveRotation (m_Rotation);
-        m_Rigidbody.MovePosition (m_Rigidbody.position + m_Movement * walkSpeed * Time.deltaTime);
-
+        m_Rigidbody.MovePosition (m_Rigidbody.position + m_Movement * walkSpeed * Time.deltaTime); 
+    
+    }
+    void Update()
+    {
         Sprint();
-
+    }
+        
 
         
-    }
     private void OnTriggerEnter(Collider whatDidIHit)
     {
         if(whatDidIHit.tag == "Powerup")
@@ -159,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-}
+
  //Sprint Function
     private bool isSprintOnCooldown = false;
     private bool isSprinting = false;
@@ -169,6 +171,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject sprintIconActive;
     public GameObject sprintIconOff;
     public GameObject sprintIconReady;
+
 private void Sprint()
 {
     // Start sprint
