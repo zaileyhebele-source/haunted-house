@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;   
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -39,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (freezeText != null)
             freezeText.gameObject.SetActive(false);
+        sprintIconActive.SetActive(false);
+        sprintIconOff.SetActive(true);
     }
 
     void FixedUpdate()
@@ -111,3 +116,66 @@ public class PlayerMovement : MonoBehaviour
         m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * walkSpeed * Time.deltaTime);
     }
 }
+        Vector3 desiredForward = Vector3.RotateTowards (transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
+        m_Rotation = Quaternion.LookRotation (desiredForward);
+        
+        m_Rigidbody.MoveRotation (m_Rotation);
+        m_Rigidbody.MovePosition (m_Rigidbody.position + m_Movement * walkSpeed * Time.deltaTime);
+
+        Sprint();
+
+
+        
+    }
+ //Sprint Function
+    private bool isSprintOnCooldown = false;
+    private bool isSprinting = false;
+    private float sprintStartTime;
+    private float sprintCooldown = 2.0f;
+    private float sprintMaxDuration = 3.0f;
+    public GameObject sprintIconActive;
+    public GameObject sprintIconOff;
+    public GameObject sprintIconReady;
+private void Sprint()
+{
+    // Start sprint
+    if (Input.GetKeyDown(KeyCode.LeftShift) && !isSprinting && !isSprintOnCooldown)
+    {
+        isSprinting = true;
+        sprintStartTime = Time.time;
+        walkSpeed *= 2;
+        turnSpeed *= 2;
+
+        sprintIconActive.SetActive(true);
+        sprintIconReady.SetActive(false);
+        sprintIconOff.SetActive(false);
+    }
+
+    // Stop sprint either when key released OR max duration reached
+    if ((isSprinting && !Input.GetKey(KeyCode.LeftShift)) || (isSprinting && Time.time - sprintStartTime >= sprintMaxDuration))
+    {
+        isSprinting = false;
+        walkSpeed /= 2;
+        turnSpeed /= 2;
+
+        isSprintOnCooldown = true;
+        sprintIconActive.SetActive(false);
+        sprintIconOff.SetActive(true);
+
+        StartCoroutine(SprintCooldownRoutine());
+    }
+}
+    //sprint Cooldown
+    private IEnumerator SprintCooldownRoutine()
+{
+    yield return new WaitForSeconds(sprintCooldown);
+    isSprintOnCooldown = false;
+
+    sprintIconOff.SetActive(false);
+    sprintIconReady.SetActive(true);
+}
+}
+
+
+
+
