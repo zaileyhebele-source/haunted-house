@@ -56,37 +56,52 @@ public class PlayerMovement : MonoBehaviour
  //Sprint Function
     private bool isSprintOnCooldown = false;
     private bool isSprinting = false;
+    private float sprintStartTime;
     private float sprintCooldown = 2.0f;
-    private float sprintDuration = 5.0f;
+    private float sprintMaxDuration = 3.0f;
     public GameObject sprintIconActive;
     public GameObject sprintIconOff;
-private void Sprint(){
-
-        while (Input.GetKeyDown(KeyCode.LeftShift) && !isSprintOnCooldown){
-            StartCoroutine(SprintRoutine());
-        }
-    }
-    //sprint coroutine
-    private IEnumerator SprintRoutine(){
+    public GameObject sprintIconReady;
+private void Sprint()
+{
+    // Start sprint
+    if (Input.GetKeyDown(KeyCode.LeftShift) && !isSprinting && !isSprintOnCooldown)
+    {
         isSprinting = true;
+        sprintStartTime = Time.time;
         walkSpeed *= 2;
         turnSpeed *= 2;
-        //show sprint UI
+
         sprintIconActive.SetActive(true);
-
-    yield return new WaitForSeconds(sprintDuration);
-
-        walkSpeed /= 2;
-        turnSpeed /= 2;
-        isSprinting = false;
-        isSprintOnCooldown = true;
+        sprintIconReady.SetActive(false);
         sprintIconOff.SetActive(false);
-        
-        
-
-    yield return new WaitForSeconds(sprintCooldown);
-        isSprintOnCooldown = false;
     }
 
+    // Stop sprint either when key released OR max duration reached
+    if ((isSprinting && !Input.GetKey(KeyCode.LeftShift)) || (isSprinting && Time.time - sprintStartTime >= sprintMaxDuration))
+    {
+        isSprinting = false;
+        walkSpeed /= 2;
+        turnSpeed /= 2;
+
+        isSprintOnCooldown = true;
+        sprintIconActive.SetActive(false);
+        sprintIconOff.SetActive(true);
+
+        StartCoroutine(SprintCooldownRoutine());
+    }
 }
+    //sprint Cooldown
+    private IEnumerator SprintCooldownRoutine()
+{
+    yield return new WaitForSeconds(sprintCooldown);
+    isSprintOnCooldown = false;
+
+    sprintIconOff.SetActive(false);
+    sprintIconReady.SetActive(true);
+}
+}
+
+
+
 
