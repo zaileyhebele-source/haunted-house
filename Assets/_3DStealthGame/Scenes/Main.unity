@@ -3706,6 +3706,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5577986619789816798, guid: 66770e53997bc4646a786b5d4adfdf01,
         type: 3}
+      propertyPath: ghostPrefab
+      value: 
+      objectReference: {fileID: 5075534488604402034, guid: abeb186619cc7e6419cb81e1e4dfa162,
+        type: 3}
+    - target: {fileID: 5577986619789816798, guid: 66770e53997bc4646a786b5d4adfdf01,
+        type: 3}
       propertyPath: shieldPrefab
       value: 
       objectReference: {fileID: 3321048835187307097, guid: 26175874ff1345b4a832fc1dbff479ab,
