@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     private int unfreezePresses = 0;
     private float nextFreezeTime;
 
-    public Text freezeText;   
+    public TextMeshProUGUI freezeText;   
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
@@ -36,21 +37,26 @@ public class PlayerMovement : MonoBehaviour
 
 
     void Start()
-    {
-        m_Animator = GetComponent<Animator>();
-        m_Rigidbody = GetComponent<Rigidbody>();
+{
+    m_Animator = GetComponent<Animator>();
+    m_Rigidbody = GetComponent<Rigidbody>();
 
-        MoveAction.Enable();
-        shield = false;
-        UnfreezeAction.Enable();
+    MoveAction.Enable();
 
-        nextFreezeTime = Time.time + Random.Range(freezeIntervalMin, freezeIntervalMax);
+    //  Binding unfreeze key
+    UnfreezeAction = new InputAction(type: InputActionType.Button, binding: "<Keyboard>/e");
+    UnfreezeAction.Enable();
 
-        if (freezeText != null)
-            freezeText.gameObject.SetActive(false);
-        sprintIconActive.SetActive(false);
-        sprintIconOff.SetActive(true);
-    }
+    shield = false;
+
+    nextFreezeTime = Time.time + Random.Range(freezeIntervalMin, freezeIntervalMax);
+
+    if (freezeText != null)
+        freezeText.gameObject.SetActive(false);
+
+    sprintIconActive.SetActive(false);
+    sprintIconOff.SetActive(true);
+}
 
     void FixedUpdate()
     {
